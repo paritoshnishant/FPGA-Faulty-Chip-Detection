@@ -38,21 +38,42 @@ The design uses a pipelined 5 × 5 neighbourhood-based detection algorithm to co
 
 ## 4. System Architecture
 
-```mermaid
-flowchart TD
-    A[Chip Image ROM] --> B[RGB565 to RGB888]
-    B --> C[ROI Segmentation]
-    C --> D[5x5 Local Average]
-    D --> E[Absolute Intensity Deviation]
-    E --> F[Threshold Comparison]
-    F --> G[Defect Pixel Counter]
-    G --> H[Image Classification]
-    H --> I[GOOD / DEFECT]
-    I --> J[LED Display]
-    I --> K[Seven Segment Display]
-    I --> L[LCD Display]
+```text
+             CHIP IMAGE ROM
+              (320 x 240)
+                   |
+                   v
+          RGB565 TO RGB888
+                   |
+                   v
+           ROI SEGMENTATION
+              (Full Frame)
+                   |
+                   v
+         5 x 5 LOCAL AVERAGE
+                   |
+                   v
+       ABSOLUTE INTENSITY DEVIATION
+                   |
+                   v
+          THRESHOLD COMPARISON
+             (DELTA = 10)
+                   |
+                   v
+          DEFECT PIXEL COUNTER
+                   |
+                   v
+           IMAGE CLASSIFICATION
+          (COUNT THRESHOLD = 360)
+                   |
+                   v
+             GOOD / DEFECT
+                   |
+          +--------+--------+
+          |        |        |
+          v        v        v
+         LEDs    7-SEG     LCD
 ```
-
 ## 5. Defect Detection Algorithm
 
 The detector uses a 5 × 5 local neighbourhood around each eligible pixel.
